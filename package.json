@@ -16,6 +16,9 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
+    "build:tailwind": "postcss src/tailwind.css -o src/base.css",
+    "prebuild": "npm run build:tailwind",
+    "prestart": "npm run build:tailwind",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -35,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "postcss-cli": "^7.1.2",
+    "tailwindcss": "^1.8.10"
   }
 }
