@@ -1,11 +1,21 @@
 import { Machine, assign } from "xstate";
 import { createContext } from "react";
 
-async function pinEntry(context) {
-  console.log("weee");
-  const response = await fetch(`https://somepin.com`);
-  const json = await response.json();
-  return json;
+async function pinEntry(pinEntered) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pin: pinEntered,
+    }),
+  };
+
+  const pinEnteredResponse = await fetch(
+    `https://frontend-challenge.screencloud-michael.now.sh/api/pin/`,
+    requestOptions
+  ).then((response) => alert("Correct Pin"));
 }
 
 function calculateWithdrawal(context, event) {
@@ -65,7 +75,8 @@ export const atmStateMachine = Machine(
         on: { SUBMIT_PIN: "submittingPin" },
       },
       submittingPin: {
-        src: (context) => pinEntry(context),
+        entry: ["enterPin"],
+        // src: Promise.resolve,
         onDone: {
           target: "atmMenu",
         },
@@ -161,7 +172,7 @@ export const atmStateMachine = Machine(
   {
     actions: {
       withdraw: assign(calculateWithdrawal),
-
+      enterPin: assign((context, event) => pinEntry(event.pin)),
       incPinAttempts: assign((context) => ({
         pinAttempts: context.pinAttempts + 1,
       })),
