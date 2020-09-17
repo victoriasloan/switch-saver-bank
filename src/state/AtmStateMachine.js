@@ -181,7 +181,6 @@ export const atmStateMachine = Machine(
   {
     actions: {
       withdraw: assign(calculateWithdrawal),
-      enterPin: assign((context, event) => pinEntry(event.pin)),
       incPinAttempts: assign((context) => ({
         pinAttempts: context.pinAttempts + 1,
         error: "Pin Incorrect",
