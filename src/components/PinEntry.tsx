@@ -3,13 +3,13 @@ import { MachineContext } from "../state/AtmStateMachine";
 
 const PinEntry = () => {
   const [current, send] = useContext(MachineContext);
-  const [pinEntered, setPin] = useState("");
+  const [pin, setPin] = useState("");
 
   console.log(current, "current");
   const updatePin = (event) => {
     setPin(event.target.value);
 
-    console.log(pinEntered, "pin entered");
+    console.log(pin, "pin entered");
   };
 
   return (
@@ -20,13 +20,13 @@ const PinEntry = () => {
         type="text"
         placeholder="Enter Pin"
         aria-label="Enter Pin"
-        value={pinEntered}
+        value={pin}
         onChange={updatePin}
       />
       <button
         className="flex-shrink-0 bg-red-700 hover:bg-red-500 border-red-700 hover:border-red-500 text-sm border-4 text-white py-1 px-2 rounded cursor-pointer font-bold"
         type="button"
-        onClick={() => send("SUBMIT_PIN", { pin: pinEntered })}
+        onClick={() => send("SUBMIT_PIN", { pin: pin })}
       >
         Enter Pin
       </button>

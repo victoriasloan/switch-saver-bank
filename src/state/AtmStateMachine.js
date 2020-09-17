@@ -15,7 +15,13 @@ async function pinEntry(pinEntered) {
   const pinEnteredResponse = await fetch(
     `https://frontend-challenge.screencloud-michael.now.sh/api/pin/`,
     requestOptions
-  ).then((response) => alert("Correct Pin"));
+  );
+
+  if (pinEnteredResponse.status >= 300) throw pinEnteredResponse.status;
+
+  const pinEntryJson = await pinEnteredResponse.json();
+
+  return pinEntryJson;
 }
 
 function calculateWithdrawal(context, event) {
@@ -75,15 +81,18 @@ export const atmStateMachine = Machine(
         on: { SUBMIT_PIN: "submittingPin" },
       },
       submittingPin: {
-        entry: ["enterPin"],
+        invoke: {
+          src: (context, event) => pinEntry(event.pin),
+          onDone: {
+            target: "atmMenu",
+          },
+          onError: {
+            target: "wrongPin",
+            actions: ["incPinAttempts"],
+          },
+        },
+
         // src: Promise.resolve,
-        onDone: {
-          target: "atmMenu",
-        },
-        onError: {
-          target: "wrongPin",
-          actions: ["incPinAttempts"],
-        },
       },
       wrongPin: {
         on: {
@@ -96,23 +105,23 @@ export const atmStateMachine = Machine(
         },
       },
       atmMenu: {
-        initial: "selectOption",
+        initial: "selectAtmAction",
         states: {
-          selectOption: {
+          selectAtmAction: {
             on: {
-              EXIT: "#atm.idle",
+              BACK: "#atm.idle",
               WITHDRAW: "selectWithdrawalAmount",
               CHECK_BALANCE: "showBalance",
             },
           },
           showBalance: {
             on: {
-              BACK: "selectOption",
+              BACK: "selectAtmAction",
             },
           },
           selectWithdrawalAmount: {
             on: {
-              BACK: "selectOption",
+              BACK: "selectAtmAction",
               SELECT_AMOUNT: [
                 {
                   target: "goingIntoOverdraft",
@@ -157,7 +166,7 @@ export const atmStateMachine = Machine(
           },
           withdrawalSuccess: {
             on: {
-              BACK: "selectOption",
+              BACK: "selectAtmAction",
               WITHDRAW_MORE: "selectWithdrawalAmount",
             },
           },
@@ -175,6 +184,7 @@ export const atmStateMachine = Machine(
       enterPin: assign((context, event) => pinEntry(event.pin)),
       incPinAttempts: assign((context) => ({
         pinAttempts: context.pinAttempts + 1,
+        error: "Pin Incorrect",
       })),
     },
     guards: {
