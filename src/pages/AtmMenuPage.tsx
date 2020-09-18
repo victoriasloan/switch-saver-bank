@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { MachineContext } from "../state/AtmStateMachine";
 
 const WithdrawalPage = () => {
-  const cashWithDrawalAmounts: number[] = [140000, 9000, 50000];
+  const cashWithDrawalAmounts: number[] = [140, 90, 50];
   const [current, send] = useContext(MachineContext);
 
   const [withDrawalAmount, setWithDrawalAmount] = useState("");
@@ -13,7 +13,7 @@ const WithdrawalPage = () => {
 
     console.log(withDrawalAmount, "withdrawalAmount");
 
-    send("SELECT_AMOUNT", { amount: withDrawalAmount });
+    send("SELECT_AMOUNT", { amount: amountSelected });
   };
 
   return (
@@ -42,12 +42,39 @@ const WithdrawalPage = () => {
           <button onClick={() => send("BACK")}>Cancel Withdrawal</button>
         </div>
       )}
+
+      {current.matches("atmMenu.withdrawal.goingIntoOverdraft") && (
+        <div>
+          <button onClick={() => send("CONFIRM", { amount: withDrawalAmount })}>
+            Confirm
+          </button>
+          <button onClick={() => send("BACK")}>Cancel Withdrawal</button>
+        </div>
+      )}
     </div>
   );
 };
 
 const TransactionsPage = () => {
-  return <div>Transactions Page</div>;
+  const [current, send] = useContext(MachineContext);
+
+  if (current.context.withdrawals.length === 0) {
+    return <div>No transactions</div>;
+  }
+
+  return (
+    <div>
+      {current.context.withdrawals.map((withdrawal, index) => (
+        <button key={index}>
+          {Object.entries(withdrawal).map(([key, value]) => (
+            <div>
+              {key}: {value}
+            </div>
+          ))}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 const CheckBalancePage = () => {

@@ -28,8 +28,6 @@ function calculateWithdrawal(context, event) {
   const withdrawal = {};
   let stillToWithdraw = event.amount;
 
-  console.log(context, "context");
-  console.log(event, "event");
   // iterate over denominations
   while (stillToWithdraw > 0) {
     for (let denomination of context.denominations) {
@@ -45,13 +43,10 @@ function calculateWithdrawal(context, event) {
     }
   }
 
-  console.log(withdrawal, "withdrawal");
-  console.log(context.denominations);
-
-  // return {
-  //   withdrawals: [...context.withdrawals, withdrawal],
-  //   currentBalance: context.currentBalance - event.amount,
-  // };
+  return {
+    withdrawals: [...context.withdrawals, withdrawal],
+    currentBalance: context.currentBalance - event.amount,
+  };
 }
 
 export const MachineContext = createContext();
@@ -64,20 +59,20 @@ export const atmStateMachine = Machine(
     context: {
       denominations: [
         {
-          value: 2000,
+          value: 20,
           amount: 7,
         },
         {
-          value: 1000,
+          value: 10,
           amount: 15,
         },
         {
-          value: 500,
+          value: 5,
           amount: 4,
         },
       ],
-      withdrawals: 0,
-      currentBalance: 1110,
+      withdrawals: [],
+      currentBalance: 0,
       overdraft: 100,
       pinAttempts: 0,
     },
@@ -90,14 +85,15 @@ export const atmStateMachine = Machine(
           src: (context, event) => pinEntry(event.pin),
           onDone: {
             target: "atmMenu",
+            actions: assign({
+              currentBalance: (context, event) => event.data.currentBalance,
+            }),
           },
           onError: {
             target: "wrongPin",
             actions: ["incPinAttempts"],
           },
         },
-
-        // src: Promise.resolve,
       },
       wrongPin: {
         on: {
@@ -138,12 +134,12 @@ export const atmStateMachine = Machine(
                   BACK: "#atm.atmMenu.selectAtmAction",
                   SELECT_AMOUNT: [
                     {
-                      target: "goingIntoOverdraft",
-                      cond: "goingIntoOverdraft",
-                    },
-                    {
                       target: "insufficientFunds",
                       cond: "insufficientFunds",
+                    },
+                    {
+                      target: "goingIntoOverdraft",
+                      cond: "goingIntoOverdraft",
                     },
                     {
                       target: "confirmAmount",
@@ -187,12 +183,8 @@ export const atmStateMachine = Machine(
             },
           },
         },
-        on: {
-          EXIT: "idle",
-        },
       },
     },
-    on: {},
   },
   {
     actions: {
@@ -205,12 +197,11 @@ export const atmStateMachine = Machine(
     guards: {
       goingIntoOverdraft: (context, event) => {
         return (
-          event.amount >= context.currentBalance &&
-          event.amount <= context.currentBalance + context.overdraft
+          context.currentBalance > 0 && event.amount > context.currentBalance
         );
       },
       insufficientFunds: (context, event) =>
-        context.currentBalance + context.overdraft <= event.amount,
+        context.currentBalance + context.overdraft < event.amount,
       noWithdrawalsRemaining: (context) => context.withdrawals === 0,
       tooManyAttempts: (context) => context.pinAttempts >= 3,
     },
