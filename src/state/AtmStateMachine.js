@@ -28,6 +28,8 @@ function calculateWithdrawal(context, event) {
   const withdrawal = {};
   let stillToWithdraw = event.amount;
 
+  console.log(context, "context");
+  console.log(event, "event");
   // iterate over denominations
   while (stillToWithdraw > 0) {
     for (let denomination of context.denominations) {
@@ -43,10 +45,13 @@ function calculateWithdrawal(context, event) {
     }
   }
 
-  return {
-    withdrawals: [...context.withdrawals, withdrawal],
-    currentBalance: context.currentBalance - event.amount,
-  };
+  console.log(withdrawal, "withdrawal");
+  console.log(context.denominations);
+
+  // return {
+  //   withdrawals: [...context.withdrawals, withdrawal],
+  //   currentBalance: context.currentBalance - event.amount,
+  // };
 }
 
 export const MachineContext = createContext();
@@ -72,7 +77,7 @@ export const atmStateMachine = Machine(
         },
       ],
       withdrawals: 0,
-      currentBalance: 0,
+      currentBalance: 1110,
       overdraft: 100,
       pinAttempts: 0,
     },
@@ -110,7 +115,7 @@ export const atmStateMachine = Machine(
           selectAtmAction: {
             on: {
               BACK: "#atm.idle",
-              WITHDRAW: "selectWithdrawalAmount",
+              WITHDRAW: "withdrawal",
               CHECK_BALANCE: "showBalance",
               SHOW_TRANSACTIONS: "showTransactions",
             },
@@ -125,55 +130,60 @@ export const atmStateMachine = Machine(
               BACK: "selectAtmAction",
             },
           },
-          selectWithdrawalAmount: {
-            on: {
-              BACK: "selectAtmAction",
-              SELECT_AMOUNT: [
-                {
-                  target: "goingIntoOverdraft",
-                  cond: "goingIntoOverdraft",
+          withdrawal: {
+            initial: "selectWithdrawalAmount",
+            states: {
+              selectWithdrawalAmount: {
+                on: {
+                  BACK: "#atm.atmMenu.selectAtmAction",
+                  SELECT_AMOUNT: [
+                    {
+                      target: "goingIntoOverdraft",
+                      cond: "goingIntoOverdraft",
+                    },
+                    {
+                      target: "insufficientFunds",
+                      cond: "insufficientFunds",
+                    },
+                    {
+                      target: "confirmAmount",
+                    },
+                  ],
                 },
-                {
-                  target: "insufficientFunds",
-                  cond: "insufficientFunds",
+              },
+              goingIntoOverdraft: {
+                on: {
+                  BACK: "selectWithdrawalAmount",
+                  CONFIRM: [
+                    {
+                      target: "withdrawalSuccess",
+                      actions: ["withdraw"],
+                    },
+                  ],
                 },
-                {
-                  target: "confirmAmount",
+              },
+              confirmAmount: {
+                on: {
+                  BACK: "selectWithdrawalAmount",
+                  CONFIRM: [
+                    {
+                      target: "withdrawalSuccess",
+                      actions: ["withdraw"],
+                    },
+                  ],
                 },
-              ],
-            },
-          },
-          goingIntoOverdraft: {
-            on: {
-              DECLINE: "selectWithdrawalAmount",
-              CONFIRM: [
-                {
-                  target: "withdrawalSuccess",
-                  actions: ["withdraw"],
+              },
+              insufficientFunds: {
+                on: {
+                  BACK: "selectWithdrawalAmount",
                 },
-              ],
-            },
-          },
-          confirmAmount: {
-            on: {
-              DECLINE: "selectWithdrawalAmount",
-              CONFIRM: [
-                {
-                  target: "withdrawalSuccess",
-                  actions: ["withdraw"],
+              },
+              withdrawalSuccess: {
+                on: {
+                  BACK: "#atm.atmMenu.selectAtmAction",
+                  WITHDRAW_MORE: "selectWithdrawalAmount",
                 },
-              ],
-            },
-          },
-          insufficientFunds: {
-            on: {
-              BACK: "selectWithdrawalAmount",
-            },
-          },
-          withdrawalSuccess: {
-            on: {
-              BACK: "selectAtmAction",
-              WITHDRAW_MORE: "selectWithdrawalAmount",
+              },
             },
           },
         },
@@ -186,7 +196,7 @@ export const atmStateMachine = Machine(
   },
   {
     actions: {
-      withdraw: assign(calculateWithdrawal),
+      withdraw: assign((context, event) => calculateWithdrawal(context, event)),
       incPinAttempts: assign((context) => ({
         pinAttempts: context.pinAttempts + 1,
         error: "Pin Incorrect",

@@ -6,19 +6,10 @@ import AtmMenuPage from "./pages/AtmMenuPage";
 import { useMachine } from "@xstate/react";
 import { atmStateMachine, MachineContext } from "./state/AtmStateMachine";
 
-// const PAGE_MAP = {
-//   idle: PinEntryPage,
-//   submittingPin: PinEntryPage,
-//   atmPage: {
-//     selectAtmAction: AtmMenuPage,
-//   },
-// };
-
 function App() {
   const [current, send] = useMachine(atmStateMachine);
 
   console.log(current.value, "current");
-  // const Page = PAGE_MAP[current.value as string];
 
   const Page = current.value.atmMenu ? AtmMenuPage : PinEntryPage;
 
