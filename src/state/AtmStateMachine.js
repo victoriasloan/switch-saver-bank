@@ -112,9 +112,15 @@ export const atmStateMachine = Machine(
               BACK: "#atm.idle",
               WITHDRAW: "selectWithdrawalAmount",
               CHECK_BALANCE: "showBalance",
+              SHOW_TRANSACTIONS: "showTransactions",
             },
           },
           showBalance: {
+            on: {
+              BACK: "selectAtmAction",
+            },
+          },
+          showTransactions: {
             on: {
               BACK: "selectAtmAction",
             },
