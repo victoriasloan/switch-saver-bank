@@ -14,14 +14,23 @@ const AtmMenuPage = () => {
   console.log(current, "current");
   return (
     <div>
-      <button onClick={() => send("BACK")}>back</button>
-      {current.matches("atmMenu.selectAtmAction") && <AtmMenuActionList />}
+      <div className="flex items-center justify-center h-screen">
+        <div>
+          {/* will be left hand panel */}
+          <button onClick={() => send("BACK")}>back</button>
+        </div>
 
-      {current.matches("atmMenu.withdrawal") && <WithdrawalPage />}
+        <div>
+          {current.matches("atmMenu.selectAtmAction") && <AtmMenuActionList />}
 
-      {current.matches("atmMenu.showBalance") && <CheckBalancePage />}
+          {current.matches("atmMenu.withdrawal") && <WithdrawalPage />}
 
-      {current.matches("atmMenu.showTransactions") && <TransactionsPage />}
+          {current.matches("atmMenu.showBalance") && <CheckBalancePage />}
+
+          {current.matches("atmMenu.showTransactions") && <TransactionsPage />}
+        </div>
+      </div>
+
       {/* {current.matches("selectWithdrawalAmount") && <div>Please enter how much you want </div>} */}
     </div>
   );
