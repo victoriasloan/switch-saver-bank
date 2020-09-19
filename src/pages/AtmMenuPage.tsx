@@ -3,6 +3,7 @@ import WithdrawalPage from "./WithdrawalPage";
 import { MachineContext } from "../state/AtmStateMachine";
 import TransactionsPage from "./TransactionsPage";
 import AtmMenuActionList from "../components/AtmMenuActionsList";
+import SidePanel from "../components/SidePanel";
 
 const CheckBalancePage = () => {
   return <div>CHECK BALANCE Page</div>;
@@ -15,11 +16,7 @@ const AtmMenuPage = () => {
   return (
     <div>
       <div className="flex items-center justify-center h-screen">
-        <div>
-          {/* will be left hand panel */}
-          <button onClick={() => send("BACK")}>back</button>
-        </div>
-
+        <button onClick={() => send("BACK")}>back</button>
         <div>
           {current.matches("atmMenu.selectAtmAction") && <AtmMenuActionList />}
 
@@ -27,7 +24,10 @@ const AtmMenuPage = () => {
 
           {current.matches("atmMenu.showBalance") && <CheckBalancePage />}
 
-          {current.matches("atmMenu.showTransactions") && <TransactionsPage />}
+          {/* atmMenu.showTransactions */}
+          {current.matches("atmMenu.withdrawal.withdrawalSuccess") && (
+            <TransactionsPage />
+          )}
         </div>
       </div>
 

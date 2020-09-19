@@ -3,6 +3,7 @@ import React from "react";
 import CashImg from "../assets/CashImg.svg";
 import TransactionImg from "../assets/TransactionImg.svg";
 import AtmMenuAction from "./AtmMenuAction";
+import SidePanel from "./SidePanel";
 
 const AtmMenuActions = () => {
   const atmMenuActions = [
@@ -20,6 +21,10 @@ const AtmMenuActions = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
+      <div className="mr-32">
+        {/* will be left hand panel */}
+        <SidePanel />
+      </div>
       {atmMenuActions.map((action, index) => (
         <div className="mr-12">
           {" "}
