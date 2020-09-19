@@ -3,7 +3,7 @@ import PinEntry from "../components/PinEntry";
 
 const PinEntryPage = () => {
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen">
       {/* {current.matches("pinError") && <div>You made a mistake</div>} */}
       <PinEntry />
     </div>

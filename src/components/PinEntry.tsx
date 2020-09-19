@@ -22,15 +22,20 @@ const PinEntry = () => {
         type="numeric"
         inputMode="number"
         inputStyle={{
-          borderColor: "black",
+          borderColor: "#D9D9D9",
           borderRadius: "50px",
           marginRight: "20px",
+          color: "#D9D9D9",
+          borderWidth: "2px",
         }}
-        inputFocusStyle={{ borderColor: "blue" }}
+        inputFocusStyle={{
+          borderColor: "#7f9cf5",
+          color: "white",
+          borderWidth: "2px",
+        }}
         onComplete={(value, index) => {
           updatePin(value);
         }}
-        autoSelect={true}
       />
     </div>
   );

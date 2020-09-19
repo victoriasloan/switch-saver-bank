@@ -15,7 +15,7 @@ function App() {
 
   return (
     <MachineContext.Provider value={[current, send]}>
-      <div>
+      <div className="bg-gradient-to-r from-indigo-900 via-indigo-900 to-red-900 h-screen">
         <Page />
       </div>
     </MachineContext.Provider>
