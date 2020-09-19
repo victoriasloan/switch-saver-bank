@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { MachineContext } from "../state/AtmStateMachine";
 import WithdrawalAmountOption from "../components/WithdrawalAmountOption";
+import TrophyImg from "../assets/TrophyImg.svg";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
@@ -48,23 +49,73 @@ const WithdrawalPage = () => {
 
       {current.matches("atmMenu.withdrawal.confirmAmount") && (
         <div>
-          <div className="text-white mb-12">
+          <img src={TrophyImg} />
+          <div className="text-white mb-12 mt-12">
             <h3 className="text-xl font-bold">Confirm Cash Withdrawal</h3>
-            <p>Please confirm cash withdrawal</p>
+            <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
           </div>
-          <button onClick={() => send("CONFIRM", { amount: withDrawalAmount })}>
-            Confirm
-          </button>
-          <button onClick={() => send("BACK")}>Cancel Withdrawal</button>
+
+          <div className="flex justify-between">
+            <button
+              className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
+              onClick={() => send("BACK")}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-indigo-700 hover:bg-indigo-500 text-white font-bold font-bold py-2 px-8 rounded"
+              onClick={() => send("CONFIRM", { amount: withDrawalAmount })}
+            >
+              Confirm
+            </button>
+          </div>
         </div>
       )}
 
       {current.matches("atmMenu.withdrawal.goingIntoOverdraft") && (
         <div>
-          <button onClick={() => send("CONFIRM", { amount: withDrawalAmount })}>
-            Confirm
+          <img src={TrophyImg} />
+          <div className="text-white mb-12">
+            <h3 className="text-xl font-bold">Confirm Cash Withdrawal</h3>
+            <p>
+              {" "}
+              Withdrawing £{withDrawalAmount} will put you into your overdraft{" "}
+            </p>
+            <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
+          </div>
+
+          <div className="flex justify-between">
+            <button
+              className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
+              onClick={() => send("BACK")}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-indigo-700 hover:bg-indigo-500 text-white font-bold font-bold py-2 px-8 rounded"
+              onClick={() => send("CONFIRM", { amount: withDrawalAmount })}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      )}
+
+      {current.matches("atmMenu.withdrawal.insufficientFunds") && (
+        <div>
+          <div className="text-white mb-12">
+            <h3 className="text-xl font-bold">Insufficient Funds</h3>
+            <p>
+              Unfortunately, you do not have enough funds to withdraw £
+              {withDrawalAmount}
+            </p>
+          </div>
+          <button
+            className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
+            onClick={() => send("BACK")}
+          >
+            Back
           </button>
-          <button onClick={() => send("BACK")}>Cancel Withdrawal</button>
         </div>
       )}
     </div>
