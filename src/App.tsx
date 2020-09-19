@@ -11,12 +11,11 @@ function App() {
 
   console.log(current.value, "current");
 
-  const Page = current.value.atmMenu ? AtmMenuPage : PinEntryPage;
+  const Page = current.matches("atmMenu") ? AtmMenuPage : PinEntryPage;
 
   return (
     <MachineContext.Provider value={[current, send]}>
       <div>
-        <button onClick={() => send("BACK")}>back</button>
         <Page />
       </div>
     </MachineContext.Provider>

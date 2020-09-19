@@ -90,7 +90,7 @@ const AtmMenuHomePage = () => {
       <button onClick={() => send("CHECK_BALANCE")}>Check Balance</button>
       <button onClick={() => send("SHOW_TRANSACTIONS")}>
         Show Transactions
-      </button>{" "}
+      </button>
     </div>
   );
 };
@@ -101,6 +101,7 @@ const AtmMenuPage = () => {
   console.log(current, "current");
   return (
     <div>
+      <button onClick={() => send("BACK")}>back</button>
       {current.matches("atmMenu.selectAtmAction") && <AtmMenuHomePage />}
 
       {current.matches("atmMenu.withdrawal") && <WithdrawalPage />}
