@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { MachineContext } from "../state/AtmStateMachine";
 import WithdrawalAmountOption from "../components/WithdrawalAmountOption";
 import TrophyImg from "../assets/TrophyImg.svg";
+import PlaneImg from "../assets/PlaneImg.svg";
+import StarbucksCupImg from "../assets/StarbucksCupImg.svg";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
@@ -74,14 +76,18 @@ const WithdrawalPage = () => {
 
       {current.matches("atmMenu.withdrawal.goingIntoOverdraft") && (
         <div>
-          <img src={TrophyImg} />
-          <div className="text-white mb-12">
+          <img src={PlaneImg} />
+          <div className="text-white mb-12 mt-12">
             <h3 className="text-xl font-bold">Confirm Cash Withdrawal</h3>
             <p>
               {" "}
-              Withdrawing £{withDrawalAmount} will put you into your overdraft{" "}
+              Withdrawing £{withDrawalAmount} will put you into your overdraft.
             </p>
             <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
+            <p>
+              Remember you set your overdraft limit to £100 after your recent
+              holiday!
+            </p>
           </div>
 
           <div className="flex justify-between">
@@ -103,12 +109,14 @@ const WithdrawalPage = () => {
 
       {current.matches("atmMenu.withdrawal.insufficientFunds") && (
         <div>
-          <div className="text-white mb-12">
+          <img src={StarbucksCupImg} />
+          <div className="text-white mb-12 mt-12">
             <h3 className="text-xl font-bold">Insufficient Funds</h3>
             <p>
               Unfortunately, you do not have enough funds to withdraw £
-              {withDrawalAmount}
+              {withDrawalAmount}.
             </p>
+            <p>You may have been spending too much money on coffee again!</p>
           </div>
           <button
             className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
