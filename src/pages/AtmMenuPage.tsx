@@ -2,23 +2,10 @@ import React, { useContext } from "react";
 import WithdrawalPage from "./WithdrawalPage";
 import { MachineContext } from "../state/AtmStateMachine";
 import TransactionsPage from "./TransactionsPage";
+import AtmMenuActionList from "../components/AtmMenuActionsList";
 
 const CheckBalancePage = () => {
   return <div>CHECK BALANCE Page</div>;
-};
-
-const AtmMenuHomePage = () => {
-  const [current, send] = useContext(MachineContext);
-
-  return (
-    <div>
-      <button onClick={() => send("WITHDRAW")}>Withdraw</button>
-      <button onClick={() => send("CHECK_BALANCE")}>Check Balance</button>
-      <button onClick={() => send("SHOW_TRANSACTIONS")}>
-        Show Transactions
-      </button>
-    </div>
-  );
 };
 
 const AtmMenuPage = () => {
@@ -28,7 +15,7 @@ const AtmMenuPage = () => {
   return (
     <div>
       <button onClick={() => send("BACK")}>back</button>
-      {current.matches("atmMenu.selectAtmAction") && <AtmMenuHomePage />}
+      {current.matches("atmMenu.selectAtmAction") && <AtmMenuActionList />}
 
       {current.matches("atmMenu.withdrawal") && <WithdrawalPage />}
 
