@@ -22,12 +22,10 @@ const AtmMenuActions = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="mr-32">
-        {/* will be left hand panel */}
         <SidePanel />
       </div>
       {atmMenuActions.map((action, index) => (
         <div className="mr-12">
-          {" "}
           <AtmMenuAction
             key={index}
             actionName={action.actionName}

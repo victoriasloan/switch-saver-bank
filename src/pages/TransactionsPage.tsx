@@ -2,12 +2,22 @@ import React, { useContext } from "react";
 import { MachineContext } from "../state/AtmStateMachine";
 import TransactionImg from "../assets/TransactionImg.svg";
 import TransactionsTable from "../components/TransactionsTable";
+import Chevron from "../assets/Chevron.svg";
 
 const TransactionsPage = () => {
   const [current, send] = useContext(MachineContext);
 
   if (current.context.withdrawals.length === 0) {
-    return <p className="font-bold text-white mt-12">No transactions</p>;
+    return (
+      <div>
+        <img
+          src={Chevron}
+          className="cursor-pointer"
+          onClick={() => send("BACK")}
+        />
+        <p className="font-bold text-white mt-12">No transactions</p>
+      </div>
+    );
   }
 
   return (
