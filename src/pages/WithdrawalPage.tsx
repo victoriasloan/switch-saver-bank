@@ -7,13 +7,13 @@ import StarbucksCupImg from "../assets/StarbucksCupImg.svg";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
+    10,
     20,
     50,
     90,
     120,
     140,
     150,
-    160,
     200,
     220,
   ];
@@ -104,6 +104,26 @@ const WithdrawalPage = () => {
               Confirm
             </button>
           </div>
+        </div>
+      )}
+
+      {current.matches("atmMenu.withdrawal.insufficientNotes") && (
+        <div>
+          <img src={StarbucksCupImg} />
+          <div className="text-white mb-12 mt-12">
+            <h3 className="text-xl font-bold">Not Enough Notes</h3>
+            <p>
+              Sorry
+              {withDrawalAmount}.
+            </p>
+            <p>You may have been spending too much money on coffee again!</p>
+          </div>
+          <button
+            className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
+            onClick={() => send("BACK")}
+          >
+            Back
+          </button>
         </div>
       )}
 

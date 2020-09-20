@@ -123,6 +123,7 @@ export const atmStateMachine = Machine(
           showTransactions: {
             on: {
               BACK: "selectAtmAction",
+              WITHDRAW: "withdrawal",
             },
           },
 
@@ -136,6 +137,10 @@ export const atmStateMachine = Machine(
                     {
                       target: "insufficientFunds",
                       cond: "insufficientFunds",
+                    },
+                    {
+                      target: "insufficientNotes",
+                      cond: "insufficientNotes",
                     },
                     {
                       target: "goingIntoOverdraft",
@@ -156,6 +161,11 @@ export const atmStateMachine = Machine(
                       actions: ["withdraw"],
                     },
                   ],
+                },
+              },
+              insufficientNotes: {
+                on: {
+                  BACK: "selectWithdrawalAmount",
                 },
               },
               confirmAmount: {
@@ -185,6 +195,13 @@ export const atmStateMachine = Machine(
       withdraw: assign((context, event) => calculateWithdrawal(context, event)),
     },
     guards: {
+      insufficientNotes: (context, event) => {
+        const noteTotal = context.denominations.reduce(
+          (total, deno) => total + deno.value * deno.amount,
+          0
+        );
+        return event.amount > noteTotal;
+      },
       goingIntoOverdraft: (context, event) => {
         return (
           context.currentBalance > 0 && event.amount > context.currentBalance
