@@ -43,12 +43,6 @@ export function calculateWithdrawal(context, event) {
     }
   }
 
-  console.log({
-    withdrawals: [...context.withdrawals, withdrawal],
-    currentBalance: context.currentBalance - event.amount,
-    amountWithdrew: context.amountWithdrew + event.amount,
-  });
-
   return {
     withdrawals: [...context.withdrawals, withdrawal],
     currentBalance: context.currentBalance - event.amount,
