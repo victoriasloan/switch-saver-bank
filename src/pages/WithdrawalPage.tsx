@@ -5,6 +5,7 @@ import TrophyImg from "../assets/TrophyImg.svg";
 import PlaneImg from "../assets/PlaneImg.svg";
 import StarbucksCupImg from "../assets/StarbucksCupImg.svg";
 import CashImg from "../assets/CashImg.svg";
+import Chevron from "../assets/Chevron.svg";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
@@ -31,7 +32,12 @@ const WithdrawalPage = () => {
     <div className="flex items-center justify-center h-screen">
       {current.matches("atmMenu.withdrawal.selectWithdrawalAmount") && (
         <div>
-          <div className="text-white mb-12">
+          <img
+            src={Chevron}
+            className="cursor-pointer"
+            onClick={() => send("BACK")}
+          />
+          <div className="text-white mb-12 mt-8">
             <h3 className="text-xl font-bold">Withdraw Cash</h3>
             <p>Please select cash withdrawal amount</p>
           </div>

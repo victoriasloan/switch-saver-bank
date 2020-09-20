@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import WithdrawalPage from "./WithdrawalPage";
 import { MachineContext } from "../state/AtmStateMachine";
+import WithdrawalPage from "./WithdrawalPage";
 import TransactionsPage from "./TransactionsPage";
 import AtmMenuActionList from "../components/AtmMenuActionsList";
-import SwitchSaverBankImg from "../assets/SwitchSaverBankImg.svg";
+import SSlogo from "../assets/SSlogo.svg";
 
 const AtmMenuPage = () => {
   const [current, send] = useContext(MachineContext);
@@ -11,7 +11,11 @@ const AtmMenuPage = () => {
   console.log(current, "current");
   return (
     <div className="h-screen overflow-hidden">
-      <button onClick={() => send("BACK")}>back</button>
+      <img
+        src={SSlogo}
+        className="mt-2 ml-2 cursor-pointer"
+        onClick={() => send("BACK")}
+      />
 
       <div className="flex items-center justify-center">
         <div>
