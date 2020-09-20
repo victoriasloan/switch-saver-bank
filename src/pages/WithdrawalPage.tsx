@@ -4,6 +4,7 @@ import WithdrawalAmountOption from "../components/WithdrawalAmountOption";
 import TrophyImg from "../assets/TrophyImg.svg";
 import PlaneImg from "../assets/PlaneImg.svg";
 import StarbucksCupImg from "../assets/StarbucksCupImg.svg";
+import CashImg from "../assets/CashImg.svg";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
@@ -78,16 +79,12 @@ const WithdrawalPage = () => {
         <div>
           <img src={PlaneImg} />
           <div className="text-white mb-12 mt-12">
-            <h3 className="text-xl font-bold">Confirm Cash Withdrawal</h3>
-            <p>
-              {" "}
-              Withdrawing £{withDrawalAmount} will put you into your overdraft.
-            </p>
+            <h3 className="text-xl font-bold">
+              Happy to go into your overdraft?
+            </h3>
             <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
-            <p>
-              Remember you set your overdraft limit to £100 after your recent
-              holiday!
-            </p>
+            <p>This transaction will put you into your overdraft.</p>
+            <p>You set your overdraft to £100 after your last holiday.</p>
           </div>
 
           <div className="flex justify-between">
@@ -109,14 +106,13 @@ const WithdrawalPage = () => {
 
       {current.matches("atmMenu.withdrawal.insufficientNotes") && (
         <div>
-          <img src={StarbucksCupImg} />
+          <img src={CashImg} />
           <div className="text-white mb-12 mt-12">
             <h3 className="text-xl font-bold">Not Enough Notes</h3>
             <p>
-              Sorry
-              {withDrawalAmount}.
+              Sorry, the SSB ATM doesn't have enough notes to give you £
+              {withDrawalAmount}
             </p>
-            <p>You may have been spending too much money on coffee again!</p>
           </div>
           <button
             className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"

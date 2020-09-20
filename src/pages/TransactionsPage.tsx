@@ -11,7 +11,7 @@ const TransactionsPage = () => {
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-32 text-white">
       <img src={TransactionImg} className="ml-24" />
 
       <div className="text-white mb-12 mt-12">
