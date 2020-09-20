@@ -17,6 +17,8 @@ const PinEntry = () => {
 
   const clearPin = () => {
     pinInput.clear();
+
+    send("BACK");
   };
 
   return (

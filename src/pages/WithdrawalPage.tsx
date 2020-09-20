@@ -27,7 +27,7 @@ const WithdrawalPage = () => {
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen">
       {current.matches("atmMenu.withdrawal.selectWithdrawalAmount") && (
         <div>
           <div className="text-white mb-12">

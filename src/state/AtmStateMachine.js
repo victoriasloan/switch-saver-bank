@@ -125,6 +125,7 @@ export const atmStateMachine = Machine(
               BACK: "selectAtmAction",
             },
           },
+
           withdrawal: {
             initial: "selectWithdrawalAmount",
             states: {
@@ -151,7 +152,7 @@ export const atmStateMachine = Machine(
                   BACK: "selectWithdrawalAmount",
                   CONFIRM: [
                     {
-                      target: "withdrawalSuccess",
+                      target: "#atm.atmMenu.showTransactions",
                       actions: ["withdraw"],
                     },
                   ],
@@ -162,7 +163,7 @@ export const atmStateMachine = Machine(
                   BACK: "selectWithdrawalAmount",
                   CONFIRM: [
                     {
-                      target: "withdrawalSuccess",
+                      target: "#atm.atmMenu.showTransactions",
                       actions: ["withdraw"],
                     },
                   ],
@@ -171,12 +172,6 @@ export const atmStateMachine = Machine(
               insufficientFunds: {
                 on: {
                   BACK: "selectWithdrawalAmount",
-                },
-              },
-              withdrawalSuccess: {
-                on: {
-                  BACK: "#atm.atmMenu.selectAtmAction",
-                  WITHDRAW_MORE: "selectWithdrawalAmount",
                 },
               },
             },

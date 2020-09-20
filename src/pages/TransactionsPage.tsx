@@ -10,17 +10,30 @@ const TransactionsPage = () => {
   }
 
   return (
-    <div>
-      {current.context.withdrawals.map((withdrawal, index) => (
-        <button key={index}>
-          {Object.entries(withdrawal).map(([key, value]) => (
-            <div>
-              {key}: {value}
-            </div>
+    <table className="table-auto">
+      <thead>
+        <tr>
+          <th className="px-4 py-2">Withdrawal</th>
+          {current.context.denominations.map((denomination) => (
+            <th className="px-4 py-2" key={denomination.value}>
+              £{denomination.value}
+            </th>
           ))}
-        </button>
-      ))}
-    </div>
+        </tr>
+      </thead>
+      <tbody>
+        {current.context.withdrawals.map((withdrawal, idx) => (
+          <tr>
+            <td className="border px-4 py-2">{idx + 1}</td>
+            {current.context.denominations.map((denomination) => (
+              <td className="border px-4 py-2">
+                {withdrawal[denomination.value] || 0}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
