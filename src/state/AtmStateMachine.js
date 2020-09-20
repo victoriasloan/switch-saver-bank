@@ -24,7 +24,7 @@ async function pinEntry(pinEntered) {
   return pinEntryJson;
 }
 
-function calculateWithdrawal(context, event) {
+export function calculateWithdrawal(context, event) {
   const withdrawal = {};
   let stillToWithdraw = event.amount;
 
@@ -42,6 +42,12 @@ function calculateWithdrawal(context, event) {
       stillToWithdraw -= denomination.value;
     }
   }
+
+  console.log({
+    withdrawals: [...context.withdrawals, withdrawal],
+    currentBalance: context.currentBalance - event.amount,
+    amountWithdrew: context.amountWithdrew + event.amount,
+  });
 
   return {
     withdrawals: [...context.withdrawals, withdrawal],

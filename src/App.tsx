@@ -9,8 +9,6 @@ import { atmStateMachine, MachineContext } from "./state/AtmStateMachine";
 function App() {
   const [current, send] = useMachine(atmStateMachine);
 
-  console.log(current.value, "current");
-
   const Page = current.matches("atmMenu") ? AtmMenuPage : PinEntryPage;
 
   return (
