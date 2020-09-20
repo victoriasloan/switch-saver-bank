@@ -1,7 +1,7 @@
 ## Switch Saver bank
 Built with React, tailwindCSS and XState
 
-Video: https://www.loom.com/share/9cf3490290fb46489eedc74efc8fe719
+Video: https://www.loom.com/share/9cf3490290fb46489eedc74efc8fe719 <br />
 SSbanks State visualised: https://xstate.js.org/viz/?gist=79c6ecbdcfc212113eca39946a1ae224
 
 All assets were created in Figma and exported as SVG's
