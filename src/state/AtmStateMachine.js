@@ -46,6 +46,7 @@ function calculateWithdrawal(context, event) {
   return {
     withdrawals: [...context.withdrawals, withdrawal],
     currentBalance: context.currentBalance - event.amount,
+    amountWithdrew: context.amountWithdrew + event.amount,
   };
 }
 
@@ -72,9 +73,11 @@ export const atmStateMachine = Machine(
         },
       ],
       withdrawals: [],
+      amountWithdrew: 0,
       currentBalance: 0,
       overdraft: 100,
       pinAttempts: 0,
+      switchCost: 270,
     },
     states: {
       idle: {
