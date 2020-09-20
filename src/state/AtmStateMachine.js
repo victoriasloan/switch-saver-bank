@@ -17,7 +17,7 @@ async function pinEntry(pinEntered) {
     requestOptions
   );
 
-  if (pinEnteredResponse.status >= 300) throw pinEnteredResponse.status;
+  if (pinEnteredResponse.status >= 400) throw pinEnteredResponse.status;
 
   const pinEntryJson = await pinEnteredResponse.json();
 
