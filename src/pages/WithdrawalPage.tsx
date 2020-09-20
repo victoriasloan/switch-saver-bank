@@ -6,6 +6,7 @@ import PlaneImg from "../assets/PlaneImg.svg";
 import StarbucksCupImg from "../assets/StarbucksCupImg.svg";
 import CashImg from "../assets/CashImg.svg";
 import Chevron from "../assets/Chevron.svg";
+import ConfirmScreen from "../components/ConfirmScreen";
 
 const WithdrawalPage = () => {
   const cashWithDrawalAmounts: number[] = [
@@ -19,6 +20,7 @@ const WithdrawalPage = () => {
     200,
     220,
   ];
+
   const [current, send] = useContext(MachineContext);
   const [withDrawalAmount, setWithDrawalAmount] = useState("");
 
@@ -57,95 +59,60 @@ const WithdrawalPage = () => {
       )}
 
       {current.matches("atmMenu.withdrawal.confirmAmount") && (
-        <div>
-          <img src={TrophyImg} />
-          <div className="text-white mb-12 mt-12">
-            <h3 className="text-xl font-bold">Confirm Cash Withdrawal</h3>
-            <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
-          </div>
-
-          <div className="flex justify-between">
-            <button
-              className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
-              onClick={() => send("BACK")}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-indigo-700 hover:bg-indigo-500 text-white font-bold font-bold py-2 px-8 rounded"
-              onClick={() => send("CONFIRM", { amount: withDrawalAmount })}
-            >
-              Confirm
-            </button>
-          </div>
-        </div>
+        <ConfirmScreen
+          img={TrophyImg}
+          hasConfirmButton={true}
+          withdrawalAmount={withDrawalAmount}
+          heading="Confirm Cash Withdrawal"
+          description="You have enough funds in your current account."
+          subheading="One step closer to that switch.. "
+          onCancel={() => send("BACK")}
+          onConfirm={() => send("CONFIRM", { amount: withDrawalAmount })}
+        />
       )}
 
       {current.matches("atmMenu.withdrawal.goingIntoOverdraft") && (
         <div>
-          <img src={PlaneImg} />
-          <div className="text-white mb-12 mt-12">
-            <h3 className="text-xl font-bold">
-              Happy to go into your overdraft?
-            </h3>
-            <p>Are you sure you want to withdraw £{withDrawalAmount}?</p>
-            <p>This transaction will put you into your overdraft.</p>
-            <p>You set your overdraft to £100 after your last holiday.</p>
-          </div>
-
-          <div className="flex justify-between">
-            <button
-              className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
-              onClick={() => send("BACK")}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-indigo-700 hover:bg-indigo-500 text-white font-bold font-bold py-2 px-8 rounded"
-              onClick={() => send("CONFIRM", { amount: withDrawalAmount })}
-            >
-              Confirm
-            </button>
-          </div>
+          <ConfirmScreen
+            img={PlaneImg}
+            hasConfirmButton={true}
+            withdrawalAmount={withDrawalAmount}
+            heading="Happy to go into your overdraft?"
+            description="This transaction will put you into your overdraft."
+            subheading="You set your overdraft to £100 after your recent holiday."
+            onCancel={() => send("BACK")}
+            onConfirm={() => send("CONFIRM", { amount: withDrawalAmount })}
+          />
         </div>
       )}
 
       {current.matches("atmMenu.withdrawal.insufficientNotes") && (
         <div>
-          <img src={CashImg} />
-          <div className="text-white mb-12 mt-12">
-            <h3 className="text-xl font-bold">Not Enough Notes</h3>
-            <p>
-              Sorry, the SSB ATM doesn't have enough notes to give you £
-              {withDrawalAmount}
-            </p>
-          </div>
-          <button
-            className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
-            onClick={() => send("BACK")}
-          >
-            Back
-          </button>
+          <ConfirmScreen
+            img={CashImg}
+            hasConfirmButton={false}
+            withdrawalAmount={withDrawalAmount}
+            heading="Not Enough Notes in ATM"
+            subheading="Try selecting a smaller amount."
+            onConfirm={() => console.log("no confirm here")}
+            description={`Sorry, the SSB ATM doesnt have enough notes left to give you £${withDrawalAmount}`}
+            onCancel={() => send("BACK")}
+          />
         </div>
       )}
 
       {current.matches("atmMenu.withdrawal.insufficientFunds") && (
         <div>
-          <img src={StarbucksCupImg} />
-          <div className="text-white mb-12 mt-12">
-            <h3 className="text-xl font-bold">Insufficient Funds</h3>
-            <p>
-              Unfortunately, you do not have enough funds to withdraw £
-              {withDrawalAmount}.
-            </p>
-            <p>You may have been spending too much money on coffee again!</p>
-          </div>
-          <button
-            className="bg-white hover:text-indigo-500 text-indigo-700 font-bold font-bold py-2 px-8 rounded"
-            onClick={() => send("BACK")}
-          >
-            Back
-          </button>
+          <ConfirmScreen
+            img={StarbucksCupImg}
+            hasConfirmButton={false}
+            withdrawalAmount={withDrawalAmount}
+            heading="Insufficient Funds"
+            subheading="You may have been spending too much on coffee again"
+            onConfirm={() => console.log("no confirm here")}
+            description={`Unfortunately, you do not have enough funds to withdraw £${withDrawalAmount}`}
+            onCancel={() => send("BACK")}
+          />
         </div>
       )}
     </div>
