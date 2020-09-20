@@ -3,11 +3,6 @@ import WithdrawalPage from "./WithdrawalPage";
 import { MachineContext } from "../state/AtmStateMachine";
 import TransactionsPage from "./TransactionsPage";
 import AtmMenuActionList from "../components/AtmMenuActionsList";
-import SidePanel from "../components/SidePanel";
-
-const CheckBalancePage = () => {
-  return <div>CHECK BALANCE Page</div>;
-};
 
 const AtmMenuPage = () => {
   const [current, send] = useContext(MachineContext);
@@ -21,8 +16,6 @@ const AtmMenuPage = () => {
           {current.matches("atmMenu.selectAtmAction") && <AtmMenuActionList />}
 
           {current.matches("atmMenu.withdrawal") && <WithdrawalPage />}
-
-          {current.matches("atmMenu.showBalance") && <CheckBalancePage />}
 
           {/* atmMenu.showTransactions */}
           {current.matches("atmMenu.withdrawal.withdrawalSuccess") && (

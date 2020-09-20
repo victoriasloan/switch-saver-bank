@@ -76,7 +76,6 @@ export const atmStateMachine = Machine(
       amountWithdrew: 0,
       currentBalance: 0,
       overdraft: 100,
-      pinAttempts: 0,
       switchCost: 270,
     },
     states: {
@@ -94,7 +93,6 @@ export const atmStateMachine = Machine(
           },
           onError: {
             target: "wrongPin",
-            actions: ["incPinAttempts"],
           },
         },
       },
@@ -102,10 +100,8 @@ export const atmStateMachine = Machine(
         on: {
           BACK: "idle",
         },
-      },
-      lockedOut: {
-        on: {
-          EXIT: "idle",
+        after: {
+          3000: "idle",
         },
       },
       atmMenu: {
@@ -192,10 +188,6 @@ export const atmStateMachine = Machine(
   {
     actions: {
       withdraw: assign((context, event) => calculateWithdrawal(context, event)),
-      incPinAttempts: assign((context) => ({
-        pinAttempts: context.pinAttempts + 1,
-        error: "Pin Incorrect",
-      })),
     },
     guards: {
       goingIntoOverdraft: (context, event) => {
@@ -205,8 +197,6 @@ export const atmStateMachine = Machine(
       },
       insufficientFunds: (context, event) =>
         context.currentBalance + context.overdraft < event.amount,
-      noWithdrawalsRemaining: (context) => context.withdrawals === 0,
-      tooManyAttempts: (context) => context.pinAttempts >= 3,
     },
   }
 );
